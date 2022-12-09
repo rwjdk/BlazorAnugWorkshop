@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnugBlazorWorkshop", "AnugBlazorWorkshop\AnugBlazorWorkshop.csproj", "{A53C5A68-DB03-48B6-A615-0A74C368C780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedModels", "Shared\SharedModels.csproj", "{E16D2C9C-30DD-4009-B30D-25AED169CE8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A53C5A68-DB03-48B6-A615-0A74C368C780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A53C5A68-DB03-48B6-A615-0A74C368C780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A53C5A68-DB03-48B6-A615-0A74C368C780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A53C5A68-DB03-48B6-A615-0A74C368C780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E16D2C9C-30DD-4009-B30D-25AED169CE8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E16D2C9C-30DD-4009-B30D-25AED169CE8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E16D2C9C-30DD-4009-B30D-25AED169CE8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E16D2C9C-30DD-4009-B30D-25AED169CE8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EF9C2A0A-EE75-46CD-8C56-270C320BCE00}
+	EndGlobalSection
+EndGlobal

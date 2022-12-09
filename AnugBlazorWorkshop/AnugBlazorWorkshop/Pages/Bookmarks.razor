@@ -1,0 +1,24 @@
+﻿@page "/bookmarks"
+<h3>Bookmarks</h3>
+
+@if (_bookmarks != null)
+{
+    <ul>
+        @foreach (var bookmark in _bookmarks)
+        {
+            <li>
+                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a>
+            </li>
+        }
+
+    </ul>
+}
+
+@code {
+    private List<Bookmark> _bookmarks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookmarks = await new Services.BookmarkService().GetBookmarks();
+    }
+}
