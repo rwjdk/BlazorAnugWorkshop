@@ -1,0 +1,50 @@
+﻿@page "/bookmarksMud"
+@using AnugBlazorWorkshop.Services
+<h3>Bookmarks</h3>
+@inject IBookmarkService BookmarkService;
+@inject NavigationManager NavigationManager;
+
+<p>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="AddNewBookmark">Add Bookmark</MudButton>
+</p>
+
+
+@if (_bookmarks != null)
+{
+    <MudDataGrid Items="@_bookmarks">
+        <Columns>
+            <Column T="Bookmark" Field="Title"/>
+            <Column T="Bookmark" Field="Url">
+                <CellTemplate>
+                    <MudLink Href="@context.Item.Url" Target="_blank">@context.Item.Url</MudLink>
+                </CellTemplate>
+            </Column>
+            <Column T="Bookmark" Field="Description" />
+            <Column T="Bookmark" CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" OnClick="() => EditExistingBookmark(context.Item)" />
+                </CellTemplate>
+            </Column>
+        </Columns>
+    </MudDataGrid>
+}
+
+@code {
+    private List<Bookmark> _bookmarks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookmarks = await BookmarkService.GetBookmarks();
+    }
+
+    private void AddNewBookmark()
+    {
+        NavigationManager.NavigateTo("AddEditBookmark");
+    }
+
+    private void EditExistingBookmark(Bookmark bookmark)
+    {
+        NavigationManager.NavigateTo($"AddEditBookmark/{bookmark.Guid}");
+    }
+
+}
