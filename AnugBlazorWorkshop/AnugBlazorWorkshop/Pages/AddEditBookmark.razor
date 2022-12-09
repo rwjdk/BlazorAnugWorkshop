@@ -1,0 +1,50 @@
+﻿@page "/AddEditBookmark"
+@using AnugBlazorWorkshop.Services
+<h3>Add Bookmark</h3>
+@inject IBookmarkService BookmarkService;
+@inject NavigationManager NavigationManager;
+
+<EditForm Model="_bookmark" OnSubmit="FormSubmitted">
+    <DataAnnotationsValidator/>
+    
+    <label for="Title">Title</label>
+    <input @bind="_bookmark.Title" id="Title"/>
+    <ValidationMessage For="() => _bookmark.Title" />
+    
+    <br/>
+    
+    <label for="Url">Url</label>
+    <input @bind="_bookmark.Url" id="Url"/>
+    <ValidationMessage For="() => _bookmark.Url" />
+    
+    <br/>
+    
+    <label for="Description">Description</label>
+    <input @bind="_bookmark.Description" id="Description"/>
+    
+    <br/>
+    
+    <input type="submit" value="Add"/>
+</EditForm>
+
+@code {
+    private Bookmark _bookmark;
+
+    protected override void OnInitialized()
+    {
+        _bookmark = new Bookmark();
+    }
+
+
+    void FormSubmitted(EditContext editContext)
+    {
+        bool formIsValid = editContext.Validate();
+        if (formIsValid)
+        {
+            _bookmark.Guid = Guid.NewGuid().ToString();
+            BookmarkService.AddBookmark(_bookmark);
+            NavigationManager.NavigateTo("bookmarks");
+        }
+    }
+
+}

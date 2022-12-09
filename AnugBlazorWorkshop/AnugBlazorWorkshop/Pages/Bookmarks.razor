@@ -1,5 +1,13 @@
 ﻿@page "/bookmarks"
+@using AnugBlazorWorkshop.Services
 <h3>Bookmarks</h3>
+@inject IBookmarkService BookmarkService;
+@inject NavigationManager NavigationManager;
+
+<p>
+    <input type="button" value="Add Bookmark" @onclick="AddNewBookmark"/>
+</p>
+
 
 @if (_bookmarks != null)
 {
@@ -19,6 +27,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _bookmarks = await new Services.BookmarkService().GetBookmarks();
+        _bookmarks = await BookmarkService.GetBookmarks();
     }
+
+    private void AddNewBookmark()
+    {
+        NavigationManager.NavigateTo("AddEditBookmark");
+    }
+
 }
