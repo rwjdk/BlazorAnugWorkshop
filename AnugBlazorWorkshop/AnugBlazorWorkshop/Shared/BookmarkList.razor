@@ -1,0 +1,29 @@
+﻿<ul>
+    @foreach (var bookmark in Bookmarks)
+    {
+        <li>
+            <a href="@bookmark.Url" target="_blank">@bookmark.Title</a> 
+            
+            @if (ShowEditButton)
+            {
+                <input type="button" value="Edit" @onclick="() => EditExistingBookmark(bookmark)"/>
+            }
+        </li>
+    }
+
+</ul>
+@code {
+    [Parameter]
+    public List<Bookmark> Bookmarks { get; set; }
+
+    [Parameter]
+    public bool ShowEditButton { get; set; }
+
+    [Inject] 
+    NavigationManager NavigationManager { get; set; }
+
+    private void EditExistingBookmark(Bookmark bookmark)
+    {
+        NavigationManager.NavigateTo($"AddEditBookmark/{bookmark.Guid}");
+    }
+}

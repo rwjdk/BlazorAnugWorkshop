@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using AnugBlazorWorkshop.Services
+@inject IBookmarkService BookmarkService
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +9,15 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<h1>The Bookmarks:</h1>
+<BookmarkList ShowEditButton="false" Bookmarks="_bookmarks"></BookmarkList>
+
+@code {
+    private List<Bookmark> _bookmarks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookmarks = await BookmarkService.GetBookmarks();
+    }
+}
