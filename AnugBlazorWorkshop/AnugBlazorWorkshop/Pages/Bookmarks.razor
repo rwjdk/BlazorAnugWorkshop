@@ -15,7 +15,7 @@
         @foreach (var bookmark in _bookmarks)
         {
             <li>
-                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a>
+                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a> <input type="button" value="Edit" @onclick="() => EditExistingBookmark(bookmark)"/>
             </li>
         }
 
@@ -33,6 +33,11 @@
     private void AddNewBookmark()
     {
         NavigationManager.NavigateTo("AddEditBookmark");
+    }
+
+    private void EditExistingBookmark(Bookmark bookmark)
+    {
+        NavigationManager.NavigateTo($"AddEditBookmark/{bookmark.Guid}");
     }
 
 }

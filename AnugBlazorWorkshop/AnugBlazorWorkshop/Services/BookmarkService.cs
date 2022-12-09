@@ -6,11 +6,13 @@ public interface IBookmarkService
 {
     Task<List<Bookmark>> GetBookmarks();
     Task AddBookmark(Bookmark bookmark);
+    Task UpdateBookmark(Bookmark bookmark);
+    Task<Bookmark> GetBookmark(string bookmarkGuid);
 }
 
 public class BookmarkService : IBookmarkService
 {
-    public List<Bookmark> _dummyPersistance = new List<Bookmark>();
+    private readonly List<Bookmark> _dummyPersistance;
 
     public BookmarkService()
     {
@@ -32,5 +34,26 @@ public class BookmarkService : IBookmarkService
     {
         await Task.CompletedTask; //to get rid of warning for now
         _dummyPersistance.Add(bookmark);
+    }
+
+    public async Task<Bookmark> GetBookmark(string bookmarkGuid)
+    {
+        return (await GetBookmarks()).FirstOrDefault(x => x.Guid == bookmarkGuid) ?? new Bookmark() { Guid = bookmarkGuid }; //treat error scenario as you like
+    }
+
+    public async Task UpdateBookmark(Bookmark updatedBookmark)
+    {
+        await Task.CompletedTask; //to get rid of warning for now
+        var existingBookmark = _dummyPersistance.FirstOrDefault(x=> x.Guid == updatedBookmark.Guid);
+        if (existingBookmark != null)
+        {
+            existingBookmark.Title = updatedBookmark.Title;
+            existingBookmark.Description = updatedBookmark.Description;
+            existingBookmark.Url = updatedBookmark.Url;
+        }
+        else
+        {
+            await AddBookmark(updatedBookmark); //Or if you rater like it ignore or throw error
+        }
     }
 }

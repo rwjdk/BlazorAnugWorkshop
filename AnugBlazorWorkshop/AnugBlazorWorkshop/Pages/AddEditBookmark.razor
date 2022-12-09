@@ -1,50 +1,76 @@
 ﻿@page "/AddEditBookmark"
+@page "/AddEditBookmark/{BookmarkGuid}"
 @using AnugBlazorWorkshop.Services
-<h3>Add Bookmark</h3>
+<h3>@_pageTitle</h3>
 @inject IBookmarkService BookmarkService;
 @inject NavigationManager NavigationManager;
 
 <EditForm Model="_bookmark" OnSubmit="FormSubmitted">
-    <DataAnnotationsValidator/>
-    
+    <DataAnnotationsValidator />
+
     <label for="Title">Title</label>
-    <input @bind="_bookmark.Title" id="Title"/>
+    <input @bind="_bookmark.Title" id="Title" />
     <ValidationMessage For="() => _bookmark.Title" />
-    
-    <br/>
-    
+
+    <br />
+
     <label for="Url">Url</label>
-    <input @bind="_bookmark.Url" id="Url"/>
+    <input @bind="_bookmark.Url" id="Url" />
     <ValidationMessage For="() => _bookmark.Url" />
-    
-    <br/>
-    
+
+    <br />
+
     <label for="Description">Description</label>
-    <input @bind="_bookmark.Description" id="Description"/>
-    
-    <br/>
-    
-    <input type="submit" value="Add"/>
+    <input @bind="_bookmark.Description" id="Description" />
+
+    <br />
+
+    <input type="submit" value="@_submitButtonCaption" />
 </EditForm>
 
 @code {
+
+    [Parameter]
+    public string BookmarkGuid { get; set; }
+
     private Bookmark _bookmark;
 
-    protected override void OnInitialized()
+    private bool _isAddMode;
+    private string _submitButtonCaption;
+    private string _pageTitle;
+
+    protected override async Task OnInitializedAsync()
     {
         _bookmark = new Bookmark();
+        _isAddMode = string.IsNullOrWhiteSpace(BookmarkGuid); //If no GUID we are in Add Mode
+        if (_isAddMode)
+        {
+            _submitButtonCaption = "Add";
+            _pageTitle = "Add Bookmark";
+        }
+        else
+        {
+            _bookmark = await BookmarkService.GetBookmark(BookmarkGuid);
+            _submitButtonCaption = "Update";
+            _pageTitle = $"Update Bookmark '{_bookmark.Title}'";
+        }
     }
-
 
     void FormSubmitted(EditContext editContext)
     {
         bool formIsValid = editContext.Validate();
         if (formIsValid)
         {
-            _bookmark.Guid = Guid.NewGuid().ToString();
-            BookmarkService.AddBookmark(_bookmark);
+            if (_isAddMode)
+            {
+                _bookmark.Guid = Guid.NewGuid().ToString();
+                BookmarkService.AddBookmark(_bookmark);
+            }
+            else
+            {
+                BookmarkService.UpdateBookmark(_bookmark);
+            }
             NavigationManager.NavigateTo("bookmarks");
         }
     }
-
 }
