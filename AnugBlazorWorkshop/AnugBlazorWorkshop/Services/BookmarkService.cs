@@ -1,4 +1,5 @@
-﻿using SharedModels.Model;
+﻿using System.Text.Json.Serialization;
+using SharedModels.Model;
 
 namespace AnugBlazorWorkshop.Services;
 
@@ -8,6 +9,7 @@ public interface IBookmarkService
     Task AddBookmark(Bookmark bookmark);
     Task UpdateBookmark(Bookmark bookmark);
     Task<Bookmark> GetBookmark(string bookmarkGuid);
+    Task DeleteBookmark(Bookmark bookmark);
 }
 
 public class BookmarkService : IBookmarkService
@@ -39,6 +41,15 @@ public class BookmarkService : IBookmarkService
     public async Task<Bookmark> GetBookmark(string bookmarkGuid)
     {
         return (await GetBookmarks()).FirstOrDefault(x => x.Guid == bookmarkGuid) ?? new Bookmark() { Guid = bookmarkGuid }; //treat error scenario as you like
+    }
+
+    public async Task DeleteBookmark(Bookmark bookmark)
+    {
+        await Task.CompletedTask;
+        if (_dummyPersistance.Exists(x => x.Guid == bookmark.Guid))
+        {
+            _dummyPersistance.Remove(bookmark);
+        }
     }
 
     public async Task UpdateBookmark(Bookmark updatedBookmark)

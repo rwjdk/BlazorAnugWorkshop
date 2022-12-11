@@ -1,5 +1,5 @@
-﻿@page "/AddEditBookmark"
-@page "/AddEditBookmark/{BookmarkGuid}"
+﻿@page "/AddEditBookmarkMud"
+@page "/AddEditBookmarkMud/{BookmarkGuid}"
 @using AnugBlazorWorkshop.Services
 <h3>@_pageTitle</h3>
 @inject IBookmarkService BookmarkService;
@@ -8,24 +8,22 @@
 <EditForm Model="_bookmark" OnSubmit="FormSubmitted">
     <DataAnnotationsValidator />
 
-    <label for="Title">Title</label>
-    <input @bind="_bookmark.Title" id="Title" class="field" />
+    <MudTextField @bind-Value="_bookmark.Title" Label="Title" Variant="Variant.Text"></MudTextField>
     <ValidationMessage For="() => _bookmark.Title" />
-
+        
     <br />
 
-    <label for="Url">Url</label>
-    <input @bind="_bookmark.Url" id="Url" class="field" />
-    <ValidationMessage For="() => _bookmark.Url"/>
-
+    <MudTextField @bind-Value="_bookmark.Url" Label="Url" Variant="Variant.Text"></MudTextField>
+    <ValidationMessage For="() => _bookmark.Url" />
+        
     <br />
 
-    <label for="Description">Description</label>
-    <input @bind="_bookmark.Description" id="Description" class="field"/>
+    <MudTextField @bind-Value="_bookmark.Description" Label="Description" Variant="Variant.Text"></MudTextField>
+  
+    <br/>
 
-    <br />
-
-    <input type="submit" value="@_submitButtonCaption" class="button"/>
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@_submitButtonCaption</MudButton>
+    <input type="submit" value="" />
 </EditForm>
 
 @code {
@@ -70,7 +68,7 @@
             {
                 BookmarkService.UpdateBookmark(_bookmark);
             }
-            NavigationManager.NavigateTo("bookmarks");
+            NavigationManager.NavigateTo("bookmarksMud");
             
             StateHasChanged();
         }

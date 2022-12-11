@@ -1,17 +1,20 @@
-﻿<ul>
-    @foreach (var bookmark in Bookmarks)
-    {
-        <li>
-            <a href="@bookmark.Url" target="_blank">@bookmark.Title</a> 
-            
-            @if (ShowEditButton)
-            {
-                <input type="button" value="Edit" @onclick="() => EditExistingBookmark(bookmark)"/>
-            }
-        </li>
-    }
+﻿@if (Bookmarks != null)
+{
+    <ul>
+        @foreach (var bookmark in Bookmarks)
+        {
+            <li>
+                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a>
 
-</ul>
+                @if (ShowEditButton)
+                {
+                    <input type="button" value="Edit" class="button" @onclick="() => EditExistingBookmark(bookmark)" />
+                }
+            </li>
+        }
+
+    </ul>
+}
 @code {
     [Parameter]
     public List<Bookmark> Bookmarks { get; set; }

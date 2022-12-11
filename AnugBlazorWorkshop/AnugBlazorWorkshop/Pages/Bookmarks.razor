@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager;
 
 <p>
-    <input type="button" value="Add Bookmark" @onclick="AddNewBookmark"/>
+    <input type="button" value="Add Bookmark" @onclick="AddNewBookmark" class="button"/>
 </p>
 
 
@@ -15,7 +15,7 @@
         @foreach (var bookmark in _bookmarks)
         {
             <li>
-                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a> <input type="button" value="Edit" @onclick="() => EditExistingBookmark(bookmark)"/>
+                <a href="@bookmark.Url" target="_blank">@bookmark.Title</a> <input type="button" value="Edit" class="button" @onclick="() => EditExistingBookmark(bookmark)" />
             </li>
         }
 

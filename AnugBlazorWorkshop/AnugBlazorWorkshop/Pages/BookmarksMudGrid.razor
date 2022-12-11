@@ -3,7 +3,7 @@
 <h3>Bookmarks</h3>
 @inject IBookmarkService BookmarkService;
 @inject NavigationManager NavigationManager;
-
+@inject IDialogService DialogService
 <p>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="AddNewBookmark">Add Bookmark</MudButton>
 </p>
@@ -23,11 +23,28 @@
             <Column T="Bookmark" CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" OnClick="() => EditExistingBookmark(context.Item)" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" OnClick="() => OpenConfirmDialog(context.Item)" />
                 </CellTemplate>
             </Column>
         </Columns>
     </MudDataGrid>
 }
+
+<MudDialog @bind-IsVisible="_deleteDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.DeleteForever"/> Confirm Delete
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <p>Are you sure you wan to delete this bookmark?</p>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => _deleteDialogVisible=false">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="DeleteConfirm">Delete</MudButton>
+        
+    </DialogActions>
+</MudDialog>
 
 @code {
     private List<Bookmark> _bookmarks;
@@ -39,12 +56,31 @@
 
     private void AddNewBookmark()
     {
-        NavigationManager.NavigateTo("AddEditBookmark");
+        NavigationManager.NavigateTo("AddEditBookmarkMud");
     }
 
     private void EditExistingBookmark(Bookmark bookmark)
     {
-        NavigationManager.NavigateTo($"AddEditBookmark/{bookmark.Guid}");
+        NavigationManager.NavigateTo($"AddEditBookmarkMud/{bookmark.Guid}");
+    }
+    
+    #region Delete Logic
+    private bool _deleteDialogVisible;
+    private Bookmark _bookmarkAboutToBeDeleted;
+    
+    async void DeleteConfirm()
+    {
+        await BookmarkService.DeleteBookmark(_bookmarkAboutToBeDeleted);
+        _deleteDialogVisible = false;
+        _bookmarks = await BookmarkService.GetBookmarks();
+        StateHasChanged();
     }
 
+
+    private void OpenConfirmDialog(Bookmark bookmark)
+    {
+        _bookmarkAboutToBeDeleted = bookmark;
+        _deleteDialogVisible = true;
+    }
+    #endregion
 }

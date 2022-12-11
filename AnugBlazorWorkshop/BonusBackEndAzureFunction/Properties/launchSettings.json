@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BonusBackEndAzureFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7084",
+      "launchBrowser": false
+    }
+  }
+}
