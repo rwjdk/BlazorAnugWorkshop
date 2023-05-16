@@ -3,7 +3,6 @@
 <h3>Bookmarks</h3>
 @inject IBookmarkService BookmarkService;
 @inject NavigationManager NavigationManager;
-@inject IDialogService DialogService
 <p>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="AddNewBookmark">Add Bookmark</MudButton>
 </p>
@@ -37,7 +36,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <p>Are you sure you wan to delete this bookmark?</p>
+        <p>Are you sure you want to delete this bookmark?</p>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => _deleteDialogVisible=false">Cancel</MudButton>
