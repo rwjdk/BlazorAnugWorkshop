@@ -1,5 +1,6 @@
 using AnugBlazorWorkshop;
 using AnugBlazorWorkshop.Services;
+using AnugBlazorWorkshop.ViewModel;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -13,7 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 //builder.Services.AddScoped<IBookmarkService, BookmarkServiceReal>(); //Configure Injection
 builder.Services.AddScoped<IBookmarkService, BookmarkService>(); //Configure Injection
-
+builder.Services.AddScoped<AddEditViewModel>();
 
 builder.Services.AddMudServices();
 

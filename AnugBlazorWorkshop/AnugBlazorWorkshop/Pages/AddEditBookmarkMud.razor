@@ -1,76 +1,36 @@
 ﻿@page "/AddEditBookmarkMud"
 @page "/AddEditBookmarkMud/{BookmarkGuid}"
-@using AnugBlazorWorkshop.Services
-<h3>@_pageTitle</h3>
-@inject IBookmarkService BookmarkService;
-@inject NavigationManager NavigationManager;
+@using AnugBlazorWorkshop.ViewModel
+@inject AddEditViewModel ViewModel
+<h3>@ViewModel.PageTitle</h3>
 
-<EditForm Model="_bookmark" OnSubmit="FormSubmitted">
+<EditForm Model="ViewModel.Bookmark" OnSubmit="ViewModel.FormSubmitted">
     <DataAnnotationsValidator />
 
-    <MudTextField @bind-Value="_bookmark.Title" Label="Title" Variant="Variant.Text"></MudTextField>
-    <ValidationMessage For="() => _bookmark.Title" />
+    <MudTextField @bind-Value="ViewModel.Bookmark.Title" Label="Title" Variant="Variant.Text"></MudTextField>
+    <ValidationMessage For="() => ViewModel.Bookmark.Title" />
         
     <br />
 
-    <MudTextField @bind-Value="_bookmark.Url" Label="Url" Variant="Variant.Text"></MudTextField>
-    <ValidationMessage For="() => _bookmark.Url" />
+    <MudTextField @bind-Value="ViewModel.Bookmark.Url" Label="Url" Variant="Variant.Text"></MudTextField>
+    <ValidationMessage For="() => ViewModel.Bookmark.Url" />
         
     <br />
 
-    <MudTextField @bind-Value="_bookmark.Description" Label="Description" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="ViewModel.Bookmark.Description" Label="Description" Variant="Variant.Text"></MudTextField>
   
     <br/>
 
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@_submitButtonCaption</MudButton>
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@ViewModel.SubmitButtonCaption</MudButton>
     <input type="submit" value="" />
 </EditForm>
 
 @code {
-
     [Parameter]
     public string BookmarkGuid { get; set; }
-
-    private Bookmark _bookmark;
-
-    private bool _isAddMode;
-    private string _submitButtonCaption;
-    private string _pageTitle;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        _bookmark = new Bookmark();
-        _isAddMode = string.IsNullOrWhiteSpace(BookmarkGuid); //If no GUID we are in Add Mode
-        if (_isAddMode)
-        {
-            _submitButtonCaption = "Add";
-            _pageTitle = "Add Bookmark";
-        }
-        else
-        {
-            _bookmark = await BookmarkService.GetBookmark(BookmarkGuid);
-            _submitButtonCaption = "Update";
-            _pageTitle = $"Update Bookmark '{_bookmark.Title}'";
-        }
-    }
-
-    void FormSubmitted(EditContext editContext)
-    {
-        bool formIsValid = editContext.Validate();
-        if (formIsValid)
-        {
-            if (_isAddMode)
-            {
-                _bookmark.Guid = Guid.NewGuid().ToString();
-                BookmarkService.AddBookmark(_bookmark);
-            }
-            else
-            {
-                BookmarkService.UpdateBookmark(_bookmark);
-            }
-            NavigationManager.NavigateTo("bookmarksMud");
-            
-            StateHasChanged();
-        }
+        await ViewModel.Initialize(BookmarkGuid);
     }
 }
