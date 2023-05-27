@@ -40,7 +40,14 @@ public class BookmarkService : IBookmarkService
 
     public async Task<Bookmark> GetBookmark(string bookmarkGuid)
     {
-        return (await GetBookmarks()).FirstOrDefault(x => x.Guid == bookmarkGuid) ?? new Bookmark() { Guid = bookmarkGuid }; //treat error scenario as you like
+        var match = (await GetBookmarks()).SingleOrDefault(x => x.Guid == bookmarkGuid) ?? new Bookmark() { Guid = bookmarkGuid };
+        return new Bookmark
+        {
+            Guid = match.Guid,
+            Title = match.Title,
+            Description = match.Description,
+            Url = match.Url
+        };
     }
 
     public async Task DeleteBookmark(Bookmark bookmark)
@@ -55,7 +62,7 @@ public class BookmarkService : IBookmarkService
     public async Task UpdateBookmark(Bookmark updatedBookmark)
     {
         await Task.CompletedTask; //to get rid of warning for now
-        var existingBookmark = _dummyPersistance.FirstOrDefault(x=> x.Guid == updatedBookmark.Guid);
+        var existingBookmark = _dummyPersistance.FirstOrDefault(x => x.Guid == updatedBookmark.Guid);
         if (existingBookmark != null)
         {
             existingBookmark.Title = updatedBookmark.Title;
